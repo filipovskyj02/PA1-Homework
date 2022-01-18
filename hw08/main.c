@@ -1,32 +1,29 @@
+#ifndef __PROGTEST__
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
-
 typedef struct TEmployee
 {
     struct TEmployee         * m_Next;
-    char             *        m_Name;
     struct TEmployee         * m_Bak;
+    char                     * m_Name;
 } TEMPLOYEE;
 
+#endif /* __PROGTEST__ */
 
-void PrintList (TEMPLOYEE * n){
-    while (n != NULL){
-        printf("Jmeno je : %s\n", n->m_Name);
-        if (n->m_Bak != NULL) printf("Odkazuje na %s\n", n->m_Bak->m_Name);
-        else printf("Odkazuje na NULL\n");
-        n = n->m_Next;
+TEMPLOYEE        * newEmployee  ( const char      * name,
+                                  TEMPLOYEE       * next )
+{
 
-
-
-    }
-    if (n == NULL) printf("NULL\n");
-
+    TEMPLOYEE * Novy = NULL;
+    Novy = (TEMPLOYEE*)malloc(sizeof (TEMPLOYEE ));
+    Novy->m_Name = (char *)malloc(sizeof (char ) * strlen(name)+1);
+    strcpy(Novy->m_Name,name);
+    Novy->m_Next = next;
+    return Novy;
 }
-
-//Pass the HEAD of the source list to create an independent copy of the list and return  its HEAD
 TEMPLOYEE        * cloneList    ( TEMPLOYEE       * src )
 {
     TEMPLOYEE * HashMap[2][100];
@@ -61,7 +58,7 @@ TEMPLOYEE        * cloneList    ( TEMPLOYEE       * src )
             src = src->m_Next;
 
         }
-        //Normal pass of the list
+            //Normal pass of the list
         else {
             src = src->m_Next;
         }
@@ -92,136 +89,119 @@ TEMPLOYEE        * cloneList    ( TEMPLOYEE       * src )
 
     }
     return Head;
-
-
 }
-
-
-
-
-void               freeList     ( TEMPLOYEE       * src )
-{
-    TEMPLOYEE * Temp;
-    while (src != NULL){
+void               freeList     ( TEMPLOYEE       * src ) {
+    TEMPLOYEE *Temp;
+    while (src != NULL) {
         Temp = src;
         src = src->m_Next;
         free(Temp->m_Name);
         free(Temp);
-
     }
 }
+#ifndef __PROGTEST__
+    int                main         ( int               argc,
+                                      char            * argv [] )
+    {
+        TEMPLOYEE * a, *b;
+        char tmp[100];
 
-TEMPLOYEE        * newEmployee  ( const char      * name,
-                                  TEMPLOYEE       * next )
-{
-
-    TEMPLOYEE * Novy = NULL;
-    Novy = (TEMPLOYEE*)malloc(sizeof (TEMPLOYEE ));
-    Novy->m_Name = (char *)malloc(sizeof (char ) * strlen(name)+1);
-    strcpy(Novy->m_Name,name);
-    Novy->m_Next = next;
-    return Novy;
-
-}
-int main() {
-    TEMPLOYEE * a, *b;
-    char tmp[100];
-
-    assert ( sizeof ( TEMPLOYEE ) == 3 * sizeof ( void * ) );
-    a = NULL;
-    a = newEmployee ( "Peter", a );
-    a = newEmployee ( "John", a );
-    a = newEmployee ( "Joe", a );
-    a = newEmployee ( "Maria", a );
-    a -> m_Bak = a -> m_Next;
-    a -> m_Next -> m_Next -> m_Bak = a -> m_Next -> m_Next -> m_Next;
-    a -> m_Next -> m_Next -> m_Next -> m_Bak = a -> m_Next;
-    assert ( a
-             && ! strcmp ( a -> m_Name, "Maria" )
-             && a -> m_Bak == a -> m_Next );
-    assert ( a -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Name, "Joe" )
-             && a -> m_Next -> m_Bak == NULL );
-    assert ( a -> m_Next -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Next -> m_Name, "John" )
-             && a -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next );
-    assert ( a -> m_Next -> m_Next -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
-             && a -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next );
-    assert ( a -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
-    b = cloneList ( a );
-    strncpy ( tmp, "Moe", sizeof ( tmp ) );
-    a = newEmployee ( tmp, a );
-    strncpy ( tmp, "Victoria", sizeof ( tmp ) );
-    a = newEmployee ( tmp, a );
-    strncpy ( tmp, "Peter", sizeof ( tmp ) );
-    a = newEmployee ( tmp, a );
-    b -> m_Next -> m_Next -> m_Next -> m_Bak = b -> m_Next -> m_Next;
-    assert ( a
-             && ! strcmp ( a -> m_Name, "Peter" )
-             && a -> m_Bak == NULL );
-    assert ( a -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Name, "Victoria" )
-             && a -> m_Next -> m_Bak == NULL );
-    assert ( a -> m_Next -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Next -> m_Name, "Moe" )
-             && a -> m_Next -> m_Next -> m_Bak == NULL );
-    assert ( a -> m_Next -> m_Next -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Name, "Maria" )
-             && a -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next -> m_Next );
-    assert ( a -> m_Next -> m_Next -> m_Next -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Name, "Joe" )
-             && a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Bak == NULL );
-    assert ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Name, "John" )
-             && a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next );
-    assert ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
-             && a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next -> m_Next );
-    assert ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
-    assert ( b
-             && ! strcmp ( b -> m_Name, "Maria" )
-             && b -> m_Bak == b -> m_Next );
-    assert ( b -> m_Next
-             && ! strcmp ( b -> m_Next -> m_Name, "Joe" )
-             && b -> m_Next -> m_Bak == NULL );
-    assert ( b -> m_Next -> m_Next
-             && ! strcmp ( b -> m_Next -> m_Next -> m_Name, "John" )
-             && b -> m_Next -> m_Next -> m_Bak == b -> m_Next -> m_Next -> m_Next );
-    assert ( b -> m_Next -> m_Next -> m_Next
-             && ! strcmp ( b -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
-             && b -> m_Next -> m_Next -> m_Next -> m_Bak == b -> m_Next -> m_Next );
-    assert ( b -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
-    freeList ( a );
-    b -> m_Next -> m_Bak = b -> m_Next;
-    a = cloneList ( b );
-    assert ( a
-             && ! strcmp ( a -> m_Name, "Maria" )
-             && a -> m_Bak == a -> m_Next );
-    assert ( a -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Name, "Joe" )
-             && a -> m_Next -> m_Bak == a -> m_Next );
-    assert ( a -> m_Next -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Next -> m_Name, "John" )
-             && a -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next );
-    assert ( a -> m_Next -> m_Next -> m_Next
-             && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
-             && a -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next );
-    assert ( a -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
-    assert ( b
-             && ! strcmp ( b -> m_Name, "Maria" )
-             && b -> m_Bak == b -> m_Next );
-    assert ( b -> m_Next
-             && ! strcmp ( b -> m_Next -> m_Name, "Joe" )
-             && b -> m_Next -> m_Bak == b -> m_Next );
-    assert ( b -> m_Next -> m_Next
-             && ! strcmp ( b -> m_Next -> m_Next -> m_Name, "John" )
-             && b -> m_Next -> m_Next -> m_Bak == b -> m_Next -> m_Next -> m_Next );
-    assert ( b -> m_Next -> m_Next -> m_Next
-             && ! strcmp ( b -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
-             && b -> m_Next -> m_Next -> m_Next -> m_Bak == b -> m_Next -> m_Next );
-    assert ( b -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
-    freeList ( b );
-    freeList ( a );
-    return 0;
-}
+        assert ( sizeof ( TEMPLOYEE ) == 3 * sizeof ( void * ) );
+        a = NULL;
+        a = newEmployee ( "Peter", a );
+        a = newEmployee ( "John", a );
+        a = newEmployee ( "Joe", a );
+        a = newEmployee ( "Maria", a );
+        a -> m_Bak = a -> m_Next;
+        a -> m_Next -> m_Next -> m_Bak = a -> m_Next -> m_Next -> m_Next;
+        a -> m_Next -> m_Next -> m_Next -> m_Bak = a -> m_Next;
+        assert ( a
+                 && ! strcmp ( a -> m_Name, "Maria" )
+                 && a -> m_Bak == a -> m_Next );
+        assert ( a -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Name, "Joe" )
+                 && a -> m_Next -> m_Bak == NULL );
+        assert ( a -> m_Next -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Next -> m_Name, "John" )
+                 && a -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next );
+        assert ( a -> m_Next -> m_Next -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
+                 && a -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next );
+        assert ( a -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
+        b = cloneList ( a );
+        strncpy ( tmp, "Moe", sizeof ( tmp ) );
+        a = newEmployee ( tmp, a );
+        strncpy ( tmp, "Victoria", sizeof ( tmp ) );
+        a = newEmployee ( tmp, a );
+        strncpy ( tmp, "Peter", sizeof ( tmp ) );
+        a = newEmployee ( tmp, a );
+        b -> m_Next -> m_Next -> m_Next -> m_Bak = b -> m_Next -> m_Next;
+        assert ( a
+                 && ! strcmp ( a -> m_Name, "Peter" )
+                 && a -> m_Bak == NULL );
+        assert ( a -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Name, "Victoria" )
+                 && a -> m_Next -> m_Bak == NULL );
+        assert ( a -> m_Next -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Next -> m_Name, "Moe" )
+                 && a -> m_Next -> m_Next -> m_Bak == NULL );
+        assert ( a -> m_Next -> m_Next -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Name, "Maria" )
+                 && a -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next -> m_Next );
+        assert ( a -> m_Next -> m_Next -> m_Next -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Name, "Joe" )
+                 && a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Bak == NULL );
+        assert ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Name, "John" )
+                 && a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next );
+        assert ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
+                 && a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next -> m_Next );
+        assert ( a -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
+        assert ( b
+                 && ! strcmp ( b -> m_Name, "Maria" )
+                 && b -> m_Bak == b -> m_Next );
+        assert ( b -> m_Next
+                 && ! strcmp ( b -> m_Next -> m_Name, "Joe" )
+                 && b -> m_Next -> m_Bak == NULL );
+        assert ( b -> m_Next -> m_Next
+                 && ! strcmp ( b -> m_Next -> m_Next -> m_Name, "John" )
+                 && b -> m_Next -> m_Next -> m_Bak == b -> m_Next -> m_Next -> m_Next );
+        assert ( b -> m_Next -> m_Next -> m_Next
+                 && ! strcmp ( b -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
+                 && b -> m_Next -> m_Next -> m_Next -> m_Bak == b -> m_Next -> m_Next );
+        assert ( b -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
+        freeList ( a );
+        b -> m_Next -> m_Bak = b -> m_Next;
+        a = cloneList ( b );
+        assert ( a
+                 && ! strcmp ( a -> m_Name, "Maria" )
+                 && a -> m_Bak == a -> m_Next );
+        assert ( a -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Name, "Joe" )
+                 && a -> m_Next -> m_Bak == a -> m_Next );
+        assert ( a -> m_Next -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Next -> m_Name, "John" )
+                 && a -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next -> m_Next );
+        assert ( a -> m_Next -> m_Next -> m_Next
+                 && ! strcmp ( a -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
+                 && a -> m_Next -> m_Next -> m_Next -> m_Bak == a -> m_Next -> m_Next );
+        assert ( a -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
+        assert ( b
+                 && ! strcmp ( b -> m_Name, "Maria" )
+                 && b -> m_Bak == b -> m_Next );
+        assert ( b -> m_Next
+                 && ! strcmp ( b -> m_Next -> m_Name, "Joe" )
+                 && b -> m_Next -> m_Bak == b -> m_Next );
+        assert ( b -> m_Next -> m_Next
+                 && ! strcmp ( b -> m_Next -> m_Next -> m_Name, "John" )
+                 && b -> m_Next -> m_Next -> m_Bak == b -> m_Next -> m_Next -> m_Next );
+        assert ( b -> m_Next -> m_Next -> m_Next
+                 && ! strcmp ( b -> m_Next -> m_Next -> m_Next -> m_Name, "Peter" )
+                 && b -> m_Next -> m_Next -> m_Next -> m_Bak == b -> m_Next -> m_Next );
+        assert ( b -> m_Next -> m_Next -> m_Next -> m_Next == NULL );
+        freeList ( b );
+        freeList ( a );
+        return 0;
+    }
+#endif /* __PROGTEST__ */
