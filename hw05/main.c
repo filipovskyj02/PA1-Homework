@@ -57,13 +57,20 @@ int main() {
     }
     printf("Pozadavky:\n");
     while (~scanf(" %c", &CHARACTER)) {
+        char TEMP[200];
         int MAX_SOLD = 0;
 
         if (CHARACTER == '+') {
-            char TEMP[100];
+
+
             //Using int as a boolean because lazy
             int MATCH = 0;
-            scanf("%100s", TEMP);
+            scanf("%s200", TEMP);
+            if (strlen(TEMP)>99){
+                printf("Nespravny vstup.\n");
+                free(ITEM);
+                return 1;
+            }
             //Finding if the array already contains an item with the same name.
             for (int i = 0; i < ITEMS_TOTAL; i++) {
 
