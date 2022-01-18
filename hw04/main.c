@@ -1,4 +1,31 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#define MAX_VALUE 1000000
+
+
+
+int arrayhodnot[200000];
+int arrayvstupu[MAX_VALUE];
+int array[MAX_VALUE];
+
+//Zdroj: cpp reference na zaklade discordu
+int compare_ints(const void* a, const void* b)
+{
+    int arg1 = *(const int*)a;
+    int arg2 = *(const int*)b;
+
+    if (arg1 < arg2) return -1;
+    if (arg1 > arg2) return 1;
+    return 0;
+
+
+}
+
+
+
+
+
 //Zefektivnit sorting algo
 void prototypsortu (int serazenyarray[], int delka){
     int temp = 0;
@@ -17,22 +44,20 @@ void prototypsortu (int serazenyarray[], int delka){
 }
 int main() {
     printf("Pozadavky:\n");
-    int arrayhodnot[100000];
-    int arrayvstupu[1000000];
 
     int counter=0;
+    char ch;
+    while(~scanf(" %c",&ch)){
 
-    while (1){
 
-        ;
-        char ch;
+
         int a,b,c;
-        scanf(" %c",&ch);
+
 
 
 
     if (ch == '+') {
-        if (scanf("%d", &a) != 1 || a < 0 || a > 99999|| counter+1>1000000){
+        if (scanf(" %d", &a) != 1 || a < 0 || a > 99999|| counter+1>1000000){
             printf("Nespravny vstup.\n");
             return 1;
         }
@@ -44,43 +69,45 @@ int main() {
 
     }
     else if (ch == '?'){
-        if(scanf("%d %d", &b, &c) != 2 || b > c || b < 0 || c >= counter ){
+        if(scanf(" %d %d", &b, &c) != 2 || b > c || b < 0 || c >= counter ){
             printf("Nespravny vstup.\n");
-            
+
+
             return 1;
         }
+    if (b == 0 && c == 0){
+        printf("> 0 / 0 \n");
+
+    }
 
         int delka = c-b+1;
-        int serazenyarray[delka];
+
         for (int j = 0; j < delka; j++){
-            serazenyarray[j] = arrayvstupu[b+j];
+            array[j] = arrayvstupu[b+j];
 
         }
-        prototypsortu(serazenyarray, delka);
-        int unikat = 0;
-        int celkovy = 0;
+        qsort(array, delka, sizeof(int), compare_ints);
+
+
+        //prototypsortu(serazenyarray, delka);
+        int unikat = 1;
+        int celkovy = 1;
         for (int k = 0; k < delka-1; k++) {
-            if (serazenyarray[k] == serazenyarray[k+1]){
-                celkovy++;
-            }
-            else {
-                celkovy++;
-                unikat++;
-            }
-        }
-        if (serazenyarray[delka-1] == serazenyarray[delka-2])celkovy++;
-        else {
-            celkovy++;
-            unikat++;
+            if (array[k] == array[k+1])celkovy++;
+            else {celkovy++;unikat++;}
         }
         printf("> %d / %d\n",unikat,celkovy);
 
     }
+
     else {
         printf("Nespravny vstup.\n");
+
+
         return 1;
+
     }
-        if (feof(stdin)) {break;}
+
 
 }
     return 0;
