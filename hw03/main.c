@@ -12,7 +12,7 @@ int rokp = den * 365;
 int pocetdnivmesici[] = {31,28,31,31,30,31,30,31,31,30,31,30,31};
 
 int february(int y1){
-    if(((y1 % 4 == 0) && (y1 % 100 != 0)) || y1 % 400 == 0){
+    if((y1 % 4 == 0 && y1 % 100 != 0 ) || y1 % 400 == 0){
         pocetdnivmesici[1] = 29;
         return 1;
     }else{
@@ -22,7 +22,7 @@ int february(int y1){
 }
 
 int jeprestupny(int y1){
-    if(y1 % 4 == 0 && y1 % 100 != 0 || y1 % 400 == 0){
+    if((y1 % 4 == 0 && y1 % 100 != 0 ) || y1 % 400 == 0){
         return 1;
     }else{
         return 0;
@@ -83,21 +83,7 @@ int hoddiff (int h1, int h2)
     return sum;
 
 }
-int rokdiff(int y1,int y2) {
-    int sum = 0;
-    if (y2 == y1) return sum;
 
-    while (y1 != y2){
-        if (0 == 0) {
-            sum += 364 * den;
-        }
-        else sum += 365 * den;
-        y1++;
-
-    }
-    return sum;
-
-}
 
 int rozdildni (int y1,int m1, int d1,int y2,int m2, int d2){
     int isnegative = 0;
@@ -241,7 +227,7 @@ int main ( int argc, char * argv [] ) {
   assert ( energyConsumption ( 2400,  2, 29, 12,  0,
                                2400,  2, 29, 12,  0, &consumption ) == 1
            && consumption == 0LL );
-  
+
 
   return 0;
 }
