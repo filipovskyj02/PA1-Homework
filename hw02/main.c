@@ -27,30 +27,42 @@ void pocticko (int arr[],int k, int r, int sp)
     pocticko(arr,k,r,sp);
 }
 int main() {
+    int u = 5;
     printf("Pozice a soustava:\n");
     int p, xd;
+
     lol:
-    while (scanf("%d %d", &p,&xd) == 2 ) {
-        if ( xd != 10 || p < 0) printf("Nespravny vstup.\n");
+    {
+        while (scanf("%d %d", &p, &xd) == 2) {
+            u = 1;
+            if (xd != 10 || p < 0) {
+                printf("Nespravny vstup.\n");
+                goto lol;
+            }
 
-        if (p == 0) {
-            printf("0\n");
+            if (p == 0) {
+                printf("0\n");
+                printf("^\n");
+                goto lol;
+
+
+            }
+            int k = 1;
+            int r = p;
+            int sp = 0;
+
+            int arr[2];
+            arr[0] = 0;
+            arr[1] = 0;
+            pocticko(arr, k, r, sp);
+            printf("%d\n", arr[0]);
+            for (int i = 0; i < arr[1] - 1; i++) printf(" ");
             printf("^\n");
-            goto lol;
-
 
         }
-        int k = 1;
-        int r = p;
-        int sp = 0;
-
-        int arr[2];
-        arr[0] = 0;
-        arr[1] = 0;
-        pocticko(arr, k, r, sp);
-        printf("%d\n", arr[0]);
-        for (int i = 0; i < arr[1] - 1; i++) printf(" ");
-        printf("^\n");
+        if (u == 5 ) {
+            printf("Nespravny vstup.\n");
+        }
+        return 0;
     }
-    return 0;
 }
