@@ -18,7 +18,7 @@ TEMPLOYEE        * newEmployee  ( const char      * name,
 {
 
     TEMPLOYEE * Novy = NULL;
-    Novy = (TEMPLOYEE*)malloc(sizeof (TEMPLOYEE ));
+    Novy = (TEMPLOYEE*)calloc(1,sizeof (TEMPLOYEE));
     Novy->m_Name = (char *)malloc(sizeof (char ) * strlen(name)+1);
     strcpy(Novy->m_Name,name);
     Novy->m_Next = next;
