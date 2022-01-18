@@ -163,7 +163,13 @@ int energyConsumption ( int y1, int m1, int d1, int h1, int i1,
 
     if ((d1 > 28 && jeprestupny(y1) == 0) ||(d2 > 28 && jeprestupny(y2) == 0) )
         return 0;
+
+    if (y1 < 0||y2 < 0 || m1 < 0 || m2 < 0 || d1 < 0 || d2 < 0 ||i1 < 0 || i2 < 0 || h1 < 0 || h2 < 0)
+        return 0;
+
     int sum = 0;
+
+
     if (y1 == y2 && m1 == m2 && d1 == d2)
     {
          sum += twotimesenergy(h1,i1,h2,i2);
@@ -227,7 +233,7 @@ int main ( int argc, char * argv [] ) {
   assert ( energyConsumption ( 2400,  2, 29, 12,  0,
                                2400,  2, 29, 12,  0, &consumption ) == 1
            && consumption == 0LL );
-
+    
 
   return 0;
 }
