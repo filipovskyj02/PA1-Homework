@@ -55,7 +55,7 @@ int main() {
         free(ITEM);
         return 1;
     }
-
+    printf("Pozadavky:\n");
     while (~scanf(" %c", &CHARACTER)) {
         int MAX_SOLD = 0;
 
@@ -92,6 +92,8 @@ int main() {
         } else if (CHARACTER == '?') {
             qsort(ITEM, ITEMS_TOTAL, sizeof(struct ITEM_CLASS), COMPARE_QUANTITY);
             int to = TRACKED_ITEMS;
+            if (TRACKED_ITEMS > ITEMS_TOTAL) to = ITEMS_TOTAL;
+
             for (int i = 0; i < to; i++) {
                 MAX_SOLD += ITEM[i].QUANTITY;
 
