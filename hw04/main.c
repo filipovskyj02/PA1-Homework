@@ -1,11 +1,9 @@
 #include <stdio.h>
 //Zefektivnit sorting algo
 void prototypsortu (int serazenyarray[], int delka){
-    int i = 0;
-    int j = 0;
     int temp = 0;
-    for (i = 0; i < delka-1; i++) {
-        for (j = 0; j < delka-i-1; j++) {
+    for (int i = 0; i < delka-1; i++) {
+        for (int j = 0; j < delka-i-1; j++) {
             if (serazenyarray[j] > serazenyarray[j+1]) {
 
                 temp = serazenyarray[j];
@@ -23,9 +21,11 @@ int main() {
     int arrayvstupu[1000000];
 
     int counter=0;
-    char ch;
+
     while (1){
 
+        ;
+        char ch;
         int a,b,c;
         scanf(" %c",&ch);
 
@@ -46,6 +46,7 @@ int main() {
     else if (ch == '?'){
         if(scanf("%d %d", &b, &c) != 2 || b > c || b < 0 || c >= counter ){
             printf("Nespravny vstup.\n");
+            
             return 1;
         }
 
