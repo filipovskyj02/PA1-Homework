@@ -55,12 +55,4 @@ int main() {
     printf("Pocet kusu latky: %d\n", k);
     return 0;
 
-
-
-
-
-
-
-
-
 }
