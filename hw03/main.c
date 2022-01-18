@@ -7,8 +7,8 @@ int zmena[] = {4,5,2,3,3,1,5,4,1,2,4,5,2,3,3,1,5,4,1,2,4,5,2,3,3,1,5,4,1,2,4,5,2
 int den = 292886;
 int hodina = 12200;
 int minuta = 200;
-int rokn = den * 364;
-int rokp = den * 365;
+long long unsigned int rokn = den * 364;
+long long unsigned int rokp = den * 365;
 int pocetdnivmesici[] = {31,28,31,31,30,31,30,31,31,30,31,30,31};
 
 int february(int y1){
@@ -87,7 +87,7 @@ int hoddiff (int h1, int h2)
 
 int rozdildni (int y1,int m1, int d1,int y2,int m2, int d2){
     int isnegative = 0;
-    int densum = 0;
+    long long int densum = 0;
     if ((d2-d1)<0)isnegative = 1;
     while (d1 != d2){
         february(y1);
@@ -155,19 +155,20 @@ int energybetweendays (int h1, int i1, int h2, int i2){
 
 
 int energyConsumption ( int y1, int m1, int d1, int h1, int i1,
-                        int y2, int m2, int d2, int h2, int i2, long long int * consumption )
+                        int y2, int m2, int d2, int h2, int i2, long long unsigned int * consumption )
 {
-
-    if (y1 > y2 || m1 > 12 || m2 > 12 || d1 > 31 || d2 > 31 || (y1 == y2 && m1 > m2) || (y1 == y2 && m1 == m2 && d1 > d2) || (y1 == y2 && m1 == m2 && d1 == d2 && h1 > h2) || (y1 == y2 && m1 == m2 && d1 == d2 && h1 == h2 && i1 > i2))
+    *consumption = 0;
+    february(y1);
+    if (y1 > y2 || m1 > 12 || m2 > 12 || d1 > pocetdnivmesici[m1-1] || d2 > pocetdnivmesici[m2-1] || (y1 == y2 && m1 > m2) || (y1 == y2 && m1 == m2 && d1 > d2) || (y1 == y2 && m1 == m2 && d1 == d2 && h1 > h2) || (y1 == y2 && m1 == m2 && d1 == d2 && h1 == h2 && i1 > i2))
         return 0;
 
     if ((d1 > 28 && jeprestupny(y1) == 0) ||(d2 > 28 && jeprestupny(y2) == 0) )
         return 0;
 
-    if (y1 < 0||y2 < 0 || m1 < 0 || m2 < 0 || d1 < 0 || d2 < 0 ||i1 < 0 || i2 < 0 || h1 < 0 || h2 < 0)
+    if (y1 < 1600||y2 < 1600 || m1 < 0 || m2 < 0 || d1 < 0 || d2 < 0 ||i1 < 0 || i2 < 0 || h1 < 0 || h2 < 0)
         return 0;
 
-    int sum = 0;
+    long long unsigned int sum = 0;
 
 
     if (y1 == y2 && m1 == m2 && d1 == d2)
@@ -194,10 +195,15 @@ int energyConsumption ( int y1, int m1, int d1, int h1, int i1,
 
 #ifndef __PROGTEST__
 int main ( int argc, char * argv [] ) {
-    long long int  consumption;
+    long long unsigned int  consumption;
 
 
-  assert ( energyConsumption ( 2021, 10,  1, 13, 15,
+
+
+
+
+
+    assert ( energyConsumption ( 2021, 10,  1, 13, 15,
                                2021, 10,  1, 18, 45, &consumption ) == 1
            && consumption == 67116LL );
   assert ( energyConsumption ( 2021, 10,  1, 13, 15,
@@ -230,10 +236,10 @@ int main ( int argc, char * argv [] ) {
                                2021, 11, 10, 12,  0, &consumption ) == 0 );
   assert ( energyConsumption ( 2100,  2, 29, 12,  0,
                                2100,  2, 29, 12,  0, &consumption ) == 0 );
-  assert ( energyConsumption ( 2400,  2, 29, 12,  0,
-                               2400,  2, 29, 12,  0, &consumption ) == 1
-           && consumption == 0LL );
-    
+    assert ( energyConsumption ( 2400,  2, 29, 12,  0,
+                                 2400,  2, 29, 12,  0, &consumption ) == 1
+             && consumption == 0LL );
+
 
   return 0;
 }
