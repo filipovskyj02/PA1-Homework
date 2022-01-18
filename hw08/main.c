@@ -13,26 +13,41 @@ typedef struct TEmployee
 
 #endif /* __PROGTEST__ */
 
+void PrintList (TEMPLOYEE * n){
+    while (n != NULL){
+        printf("Jmeno je : %s\n", n->m_Name);
+        if (n->m_Bak != NULL) printf("Odkazuje na %s\n", n->m_Bak->m_Name);
+        else printf("Odkazuje na NULL\n");
+        n = n->m_Next;
+
+
+
+    }
+    if (n == NULL) printf("NULL\n");
+
+}
+
 TEMPLOYEE        * newEmployee  ( const char      * name,
                                   TEMPLOYEE       * next )
 {
 
     TEMPLOYEE * Novy = NULL;
     Novy = (TEMPLOYEE*)calloc(1,sizeof (TEMPLOYEE));
-    Novy->m_Name = (char *)malloc(sizeof (char ) * strlen(name)+1);
+    Novy->m_Name = (char *)calloc(1,sizeof (char ) * strlen(name)+1);
     strcpy(Novy->m_Name,name);
     Novy->m_Next = next;
     return Novy;
 }
 TEMPLOYEE        * cloneList    ( TEMPLOYEE       * src )
 {
-    TEMPLOYEE * HashMap[2][100];
+    if ( src== NULL) return NULL;
+    TEMPLOYEE * HashMap[2][10000];
     TEMPLOYEE * Head = NULL;
     TEMPLOYEE * Previous = NULL;
     //Counter to store the head
     int Counter = 0;
     while (src != NULL){
-        TEMPLOYEE * Novy = (TEMPLOYEE*)malloc(sizeof (TEMPLOYEE));
+        TEMPLOYEE * Novy = (TEMPLOYEE*)calloc(1,sizeof (TEMPLOYEE));
         HashMap[0][Counter] = src;
         HashMap[1][Counter] = Novy;
         //Storing head
@@ -47,7 +62,7 @@ TEMPLOYEE        * cloneList    ( TEMPLOYEE       * src )
 
         //Copying each element
 
-        Novy->m_Name = (char *)malloc(sizeof (char ) * strlen(src->m_Name)+1);
+        Novy->m_Name = (char *)calloc(1,sizeof (char ) * strlen(src->m_Name)+1);
         strcpy(Novy->m_Name,src->m_Name);
 
 
