@@ -9,8 +9,8 @@ struct ITEM_CLASS {
 //Structure comparator function for qsort, inspired by cpp reference and stackoverflow
 int COMPARE_QUANTITY(const void* a, const void* b){
 
-    const struct ITEM_CLASS*n1 = (struct ITEM_CLASS *)a;
-    const struct ITEM_CLASS*n2 = (struct ITEM_CLASS *)b;
+    const struct ITEM_CLASS* n1 = (struct ITEM_CLASS *)a;
+    const struct ITEM_CLASS* n2 = (struct ITEM_CLASS *)b;
     int STRCOMP;
 
     if (n1->QUANTITY < n2->QUANTITY) return 1;
@@ -80,6 +80,9 @@ int main() {
                 if (ITEMS_TOTAL+1 == SIZE) {
                     SIZE *= 2;
                     ITEM = (struct ITEM_CLASS*) realloc(ITEM, SIZE * sizeof(struct ITEM_CLASS));
+                    for (int i = ITEMS_TOTAL+1; i < SIZE; i++){
+                        ITEM[i].QUANTITY = 0;
+                    }
 
                 }
                 strcpy(ITEM[ITEMS_TOTAL].NAME, TEMP);
