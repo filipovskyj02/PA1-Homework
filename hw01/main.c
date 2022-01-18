@@ -10,7 +10,7 @@ int main() {
     }
     double p2, p1;
     printf("Velikost plachty:\n");
-    if (scanf("%lf %lf", &p1, &p2)!= 2 || p1 <= 0 || 2 <= 0 ) {
+    if (scanf("%lf %lf", &p1, &p2)!= 2 || p1 <= 0 || p2 <= 0 ) {
         printf( "Nespravny vstup.\n" );
 
         return 1;
@@ -54,5 +54,13 @@ int main() {
    int k = (n1 > m1) ? m1:n1;
     printf("Pocet kusu latky: %d\n", k);
     return 0;
+
+
+
+
+
+
+
+
 
 }
