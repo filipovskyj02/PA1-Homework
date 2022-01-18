@@ -82,5 +82,5 @@ int main() {
         if (feof(stdin)) {break;}
 
 }
-
+    return 0;
 }
